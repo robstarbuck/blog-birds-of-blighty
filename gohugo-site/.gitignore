@@ -1,0 +1,13 @@
+.sass-cache
+**/bplate
+aux
+
+content/birds/*
+!content/birds/aquaticwarbler/
+!content/birds/arcticskua/
+!content/birds/arctictern/
+
+static/images/*
+!static/images/w1000/aquaticwarbler/
+!static/images/w1000/arcticskua/
+!static/images/w1000/arctictern/

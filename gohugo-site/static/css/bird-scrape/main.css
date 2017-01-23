@@ -1,0 +1,50 @@
+@import url(bplate/library/normalize-v5.css);
+html {
+  font-size: 10px; }
+
+body {
+  font-family: sans-serif; }
+
+.cf:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+html,
+body {
+  font-size: 10px;
+  font-family: arial; }
+
+h1, h2, h3,
+li {
+  font-family: 'Raleway', sans-serif; }
+
+.initial {
+  display: block; }
+  .initial h3 {
+    page-break-before: always; }
+
+.grid {
+  margin: 0 -1rem; }
+  .grid .__ {
+    padding: 0 1rem;
+    box-sizing: border-box;
+    float: left; }
+    .grid .__.w20- {
+      width: 20%; }
+    .grid .__.w25- {
+      width: 25%; }
+    .grid .__.w33- {
+      width: 33.33%; }
+    .grid .__.w50- {
+      width: 50%; }
+    .grid .__ a {
+      line-height: 2rem; }
+
+.paper {
+  background: red; }
+
+@page {
+  size: A5; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    {{ block "head" . }}{{end}}
+
+    <title>bird_list {{ .Now.Format "2006-01-02" }}</title>
+
+    <script type="text/javascript" src="http://localhost:48626/takana.js"></script>
+    <script type="text/javascript">
+      takanaClient.run({
+        host: 'localhost:48626' // optional, defaults to localhost:48626
+      });
+    </script>
+
+  </head>
+
+  <body>
+
+      {{ block "main" . }}{{ end }}
+
+  </body>
+
+</html>
+

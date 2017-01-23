@@ -1,0 +1,128 @@
+{{ define "title" }}{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ end }}
+
+{{ define "head" }}
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link rel="stylesheet" href="/css/bird-scrape/main.css">
+
+{{ end }}
+
+{{ define "main" }}
+
+    <section style="overflow: hidden;" class="cf paper" id="initial">
+        <div class="grid alphabet">
+          <ul class="_">
+            {{ range $index, $elem := .Data.Pages.GroupByParam "initial" }}
+
+              <li class="w25- __">
+                
+                <a href="#initial_{{ .Key }}">
+                  <span>{{ .Key }}</span>
+                </a>
+
+              </li>
+            {{ end }}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+      <section class="cf" id="family">
+          <h2>FAMILY</h2>
+          <!-- The negative margin on grid causes problems, overflow hidden means it doesn't influence the parent -->
+          <div style="overflow: hidden;">
+            <div class="list- grid">
+              <ul class="_">
+                {{ range .Data.Pages.GroupByParam "family" }}
+                  <li class="w50- __">
+                    <div class="trim">
+                      <a href="#family_{{ .Key }}">{{ upper .Key }}</a>
+                    </div>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    {{ range .Data.Pages.GroupByParam "family" }}
+      <section class="cf initial" id="family_{{ .Key }}">
+          <h3><a href="#family">{{ upper .Key }}</a></h3>
+          <!-- The negative margin on grid causes problems, overflow hidden means it doesn't influence the parent -->
+          <div style="overflow: hidden;">
+            <div class="list- grid">
+              <ul class="_">
+                {{ range .Pages }}
+                  <li class="w50- __">
+                    <div class="trim">
+                      <a href="#bird_{{ .Params.id }}">{{ .Params.name }}</a>
+                    </div>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    {{ end }}
+
+
+    {{ range .Data.Pages.GroupByParam "initial" }}
+      <section class="cf initial" id="initial_{{ .Key }}">
+          <h2>{{ upper .Key }}</h2>
+          <!-- The negative margin on grid causes problems, overflow hidden means it doesn't influence the parent -->
+          <div style="overflow: hidden;">
+            <div class="list- grid">
+              <ul class="_">
+                {{ range .Pages }}
+                  <li class="w50- __">
+                    <div class="trim">
+                      <a href="#bird_{{ .Params.id }}">{{ .Params.name }}</a>
+                    </div>
+                  </li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    {{ end }}
+
+    
+    {{ range $i,$bird := .Data.Pages }}
+      <section class="cf bird" id="bird_{{$bird.Params.id}}">
+          <article>
+            <header>
+              <h2>
+              <a href="#initial">{{$bird.Params.name}}</a>
+              </h2>
+              <div class="_img">
+                {{ range $j, $elem := first 1 .Params.images }}
+                  <img src="/images/w1000/{{$bird.Params.id}}/{{ $elem }}" alt="">
+                {{end}}
+              </div>
+              <table>
+                <tr>
+                  <td>
+                    <strong>
+                      <a href="#family_{{ $bird.Params.family }}" style="text-transform: capitalize;">{{ $bird.Params.family }}</a>
+                    </strong>
+                  </td>
+                  <td style="text-align:right;">
+                    <strong>Status</strong>
+                    <span class="{{ .Status }}- status">{{ .Status }}</span>
+                  </td>
+                </tr>
+              </table>
+              
+            </header>
+            <section>
+              <p>{{$bird.Params.intro}}</p>
+            </section>
+          </article>
+      </section>
+    {{ end }} 
+
+{{ end }}
