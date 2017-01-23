@@ -4,7 +4,7 @@ A client came to me asking if could put together some Infographics along with so
 
 A week later, it occurred to me that I could quite easily have used html and CSS and output it as a PDF through the __Save as PDF__ functionality in chrome. In short web-developer can expand their service with the tools they already know. I'd even say they'd be better equipped.
 
-Keen to explore what could be achieved I set out to create a guide to British birds (Birds of Blighty), that couldn't easily be done in InDesign.
+Keen to explore what could be achieved I set out to create a guide to British birds (Birds of Blighty), that couldn't easily be done in InDesign. This post is really just a demonstration of what's possible, you can download the finished result here.
 
 # Scraping Data with Golang
 
@@ -60,6 +60,60 @@ Our bird data is now contained within our __index.md__ files.
 
 This data structure was chosen to be used with GoHugo*. A static site generator written in Golang, I now favour it's use over Jekyll (used for github pages), it's faster and more configurable. It's good to use SASS rather than CSS. Jekyll supports SASS pre-processing whereas Golang doesn't. I use Takana* to get around this problem.
 
+The body of our PDF is going to be produced from a single page of HTML. __/layouts/section/birds.html__ is the only layout we need to produce our page.
+
+A huge selling point of creating PDFs from HTML is we can use fragment identifiers to navigate our PDF. As we have some 267 birds to peruse I'm going to make them navigable by first initial as well as family.
+
+This works exactly as it would on the web, with fragments are referenced with a hash prefix `#` linking to an element of the same id.
+
+    <a href="#initial_{{ .Key }}">
+      <span>{{ .Key }}</span>
+    </a>
+
+    {{ range .Data.Pages.GroupByParam "initial" }}
+      <section class="cf initial" id="initial_{{ .Key }}">
+      …
+      </section>
+    {{ end }}
+
+I'm defining absolute dimensions for the page 94mm x 151mm, the same size as my Nexus 7. Importantly we define this against the @page selector, now chrome will know what size to output our document.
+
+    @page{
+        overflow:hidden;
+        // Nexus 2013
+        size: 94mm 151mm;
+        margin:10mm;
+        margin-bottom:15mm;
+    }
+
+The first initials page and every bird page will have no overflow, so we're specifying the same measurements for width and height.
+
+    .paper,
+    .bird,
+    {
+        page-break-before: always;
+        width: 94mm;
+        height: 151mm;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+__page-break-before__ state the top of the page should run over "the fold" of the page above. Effectively you're saying "start this on a new page". __page-break-after__ and __page-break-before__ are similarly useful these properties are enormous selling points as no-one want their content arbitrarily spilling into new pages.
+
+With width and height set we can even stretch our content over the height of the page with `height: 100%;`.
+
+Coding for print takes a little getting used to, bringing up the print-preview can prove a little arduous but it's a cinch once you're used to it. 
+
+# Finishing Touches
+
+The last thing to do is export our document, in Chrome simply set your destination to "Save as PDF" and ensure that "Background graphics" are ticked and the job's done.
+
+To finishing things off, I added a front and back cover to the PDF. This would have proven difficult in the HTML as our page margins were set globally which meant any background image or colour would still be pushed in at the margins. Instead I put together the designs in Affinity Designer* and combined the files in OSX's Preview with drag and drop.
+
 # RESOURCES
 
-[SASS preprocessor for sublime users](https://github.com/mechio/takana)
+[Repository](https://github.com/robstarbuck/blog-birds-of-blighty)
+[Takana, SASS preprocessor for sublime users](https://github.com/mechio/takana)
+[Designing for Print with CSS](https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/)
+[Selector for print (@page)](https://developer.mozilla.org/en/docs/Web/CSS/@page) 
+

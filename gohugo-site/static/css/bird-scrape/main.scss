@@ -80,13 +80,6 @@ li{
 	}
 }
 
-.initial{
-
-	display:block;
-	// page-break-before: always;
-	page-break-before: always;
-	clear:both;
-}
 .alphabet span,
 {
 	font-weight: 800;
@@ -95,14 +88,13 @@ li{
 .paper,
 .bird,
 {
-		page-break-before: always;
+	page-break-before: always;
 	width: 94mm;
 	height: 151mm;
 	box-sizing: border-box;
 	position: relative;
 }
 .bird{
-	page-break-before: always;
 	overflow: hidden;
 	article{
 		height: 100%;
