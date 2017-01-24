@@ -1,14 +1,14 @@
-A client came to me asking if could put together some basic page-layouts. The tool for the job seemed to be InDesign which I'm that familiar with. Not wanting to commit the time to learn it, nor pay £18 a month to use it, I turned the business down.
+A client came to me asking if could put together some page-layouts for a PDF. The tool for the job seemed to be InDesign which I'm not that familiar with. Not wanting to commit the time to learn it, nor pay £18 a month to use it, I turned the business down.
 
-A week later, it occurred to me that I could have put it together with HTML and output it as a PDF with the "Save as PDF" functionality in chrome. In short, web-developers can become publishers using tools they already know. I'd even say they'd be better equipped.
+A week later, it occurred to me that I could have put it together with HTML and output it as a PDF with the "Save as PDF" option in chrome. In short, web-developers can become publishers using tools they already know. I'd even say they're better equipped.
 
-Keen to explore what could be achieved I set out to create a guide to British Birds (Birds of Blighty), that couldn't easily be done in InDesign. This post is really just a demonstration of what's possible, you can see the finished result here (NB, hyperlinks won't work in preview).
+Keen to explore what could be achieved I set out to create a guide to British Birds (Birds of Blighty), that couldn't easily be done in InDesign. This post is brief walk-through the process, you can see the finished result here (NB, hyperlinks won't work in preview).
 
 [![](https://storage.googleapis.com/magpie-img/birds-of-blighty/cover.jpg)](https://drive.google.com/file/d/0B_tatgDj9IbyZ2htc01NaDRGalU/view?usp=sharing)
 
 ### Scraping Data with Golang
 
-First of all, we need information on birds and I know of a society that can help (no names mentioned). I use Golang for scripting wherever I can, I encourage developers to take the tour*, the Gopher put me off at first but I've learnt to love it, it's the one nonsensical thing about GoLang.
+First of all, we need information on birds and I know of a society that can help (no names mentioned). I use Golang for scripting wherever I can, I encourage developers to take the tour&#42;, the Gopher put me off at first but I've learnt to love it since, it's the one nonsensical thing about GoLang.
 
 I split the scrape into stages. Yes, I could have done the scrape in one go with a few loops, I've seen Inception, I understood it, but let's keep things simple.
 
@@ -18,7 +18,7 @@ __index.go__ - Gets a list of all the bird URLs from the site
 __images.go__ - Downloads images for each bird
 __content.go__ - Creates a json file for each bird and references any images  already downloaded.
 
-The code is included in "Resources", get in touch if you've any questions. I'm not going though all the code though I'll summarise a few points:
+The code is included in "Resources", get in touch if you've any questions. I'm not going through all the code though I'll summarise a few points:
 
 To grab the info from the website, I'm using [GoQuery](https://github.com/PuerkitoBio/goquery) which facilitates pulling info with the use of jQuery selectors. A list of available selectors can be found [here](https://github.com/andybalholm/cascadia/blob/master/selector_test.go). Testing selectors in Chrome DevTools beforehand makes life easy.
 
@@ -32,7 +32,7 @@ __json/encoding__ is used to _marshal_ our data. You'll see a lot of examples of
 
 The reason our data is pulled into separate __.md__ files containing markdown will be understood in the next section.
 
-I'm using panic rather than returning errors, returning errors is a little laborious for such a short script, though I recognise it's good practice. 
+I'm using panic rather than returning errors in functions, returning errors is a little laborious for such a short script, though I recognise it's good practice. 
 
 ``` language-go
     if err != nil {
@@ -66,17 +66,17 @@ Our bird data is now contained within our __index.md__ files.
 …
 ```
 
-This data structure was chosen to be used with GoHugo*. A static site generator written in Golang, I prefer it to Jekyll (used for github pages), it's faster and more configurable. SASS is always a preference to CSS but whereas Jekyll supports SASS pre-processing, GoHugo doesn't. I use Takana* to get around this problem.
+This data structure was chosen to be used with GoHugo&#42;. A static site generator written in Golang, I prefer it to Jekyll (used for github pages), it's faster and more configurable. SASS is always a preference to CSS but whereas Jekyll supports SASS pre-processing, GoHugo doesn't. I use Takana&#42; to get around this problem.
 
 The body of our PDF is going to be produced from a single page of HTML. "/layouts/section/birds.html" is the only layout we need to produce our page.
 
-A huge selling point of creating PDFs from HTML is we can use "fragment identifiers" to navigate our PDF. As we have some 267 birds to peruse I'm going to make them navigable by first initial as well as family.
+A huge selling point of creating PDFs from HTML is we can use "fragment identifiers" to navigate our PDF. As we have some 267 birds to peruse so I'm going to make them navigable by first initial as well as family.
 
 This works exactly as it would on the web, with fragments referenced by a hash prefix `#` linking to an element of the same id.
 
 ``` language-html
     <a href="#initial_{{ .Key }}">
-      <span>{{ .Key }}</span>
+       <span>{{ .Key }}</span>
     </a>
 
     {{ range .Data.Pages.GroupByParam "initial" }}
@@ -112,7 +112,7 @@ Bird pages will have no overflow, i.e. they won't paginate, so we're specifying 
     }
 ```
 
-The "page-break-before" property states the top of the page should run over "the fold" of the page above. Effectively you're saying "start this on a new page". "page-break-after" and "page-break-before" are similarly useful and these properties are enormous selling points as no-one want their content arbitrarily spilling into new pages.
+The "page-break-before" property states the top of the page should run over "the fold" of the page above. Effectively you're saying "start this on a new page". "page-break-after" and "page-break-before" are similarly useful and these properties are enormous selling points as no-one wants their content arbitrarily spilling into new pages.
 
 !["Coal Tit"](https://storage.googleapis.com/magpie-img/birds-of-blighty/coaltit.jpg)
 
@@ -126,7 +126,7 @@ The last thing to do is export our document, in Chrome simply set your destinati
 
 ![ "Chrome Print Dialogue" ](https://storage.googleapis.com/magpie-img/birds-of-blighty/print-dialogue.jpg)
 
-To finishing things off, I added a front and back cover to the PDF. This would have proven difficult in the HTML as our page margins were set globally which meant any background image or colour would appear in a white frame. Instead I put together the designs in Affinity Designer* and combined the files in OSX's Preview with drag and drop. I feared the process would break the page links but it didn't.
+To finishing things off, I added a front and back cover to the PDF. This would have proven difficult in the HTML as our page margins are set globally any background graphic would appear in a white frame. Instead I put together the designs in Affinity Designer&#42; and combined the files in OSX's Preview with drag and drop. I feared the process would break the page links but it didn't.
 
 ![ "Designing the cover with Affinity Designer"](https://storage.googleapis.com/magpie-img/birds-of-blighty/affinity.jpg)
 
@@ -141,3 +141,4 @@ Coding for print takes a little getting used to, bringing up the print-preview c
 - [Takana, SASS preprocessor for sublime users](https://github.com/mechio/takana)
 - [Designing for Print with CSS](https://www.smashingmagazine.com/2015/01/designing-for-print-with-css/)
 - [Selector for print (@page)](https://developer.mozilla.org/en/docs/Web/CSS/@page) 
+- [Affinity Designer](https://affinity.serif.com/en-gb/)
